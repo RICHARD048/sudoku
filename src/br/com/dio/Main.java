@@ -2,17 +2,15 @@ package br.com.dio;
 
 import br.com.dio.model.Board;
 import br.com.dio.model.Space;
-
+import static br.com.dio.util.BoardTemplate.BOARD_TEMPLATE;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
-import java.util.stream.Stream;
-
-import static br.com.dio.util.BoardTemplate.BOARD_TEMPLATE;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
+import java.util.Scanner;
 import static java.util.stream.Collectors.toMap;
+import java.util.stream.Stream;
 
 public class Main {
 
@@ -23,11 +21,22 @@ public class Main {
     private final static int BOARD_LIMIT = 9;
 
     public static void main(String[] args) {
-        final var positions = Stream.of(args)
-                .collect(toMap(
-                        k -> k.split(";")[0],
-                        v -> v.split(";")[1]
-                ));
+        final Map<String, String> positions;
+        if (args.length == 0) {
+            // Si no hay argumentos, crea un tablero vacío
+            positions = new java.util.HashMap<>();
+            for (int i = 0; i < BOARD_LIMIT; i++) {
+                for (int j = 0; j < BOARD_LIMIT; j++) {
+                    positions.put(i + "," + j, "0,false");
+                }
+            }
+        } else {
+            positions = Stream.of(args)
+                    .collect(toMap(
+                            k -> k.split(";")[0],
+                            v -> v.split(";")[1]
+                    ));
+        }
         var option = -1;
         while (true){
             System.out.println("Selecione uma das opções a seguir");
